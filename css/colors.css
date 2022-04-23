@@ -1,0 +1,15 @@
+@CHARSET "UTF-8";
+
+#canvas2D{
+    border: 2px solid blue;
+    background: LightGoldenRodYellow;
+} 
+
+#hint{
+    color: DarkBlue;
+    background-color: Gainsboro ;
+}
+
+.emphasis{
+    color: blue;
+}

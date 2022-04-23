@@ -1,0 +1,87 @@
+@CHARSET "UTF-8";
+
+body{
+	font-family: Verdana;
+}
+
+h1{
+	color: blue;
+	text-shadow: 2px 2px #a9a9a9;
+	text-align: center;
+}
+
+.multipleChoice{
+	width: 60%;
+	cursor: pointer;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+
+.multipleChoice:hover{
+	color: blue;
+	text-shadow: 1px 1px #c9ffff;
+	background-color: #a5a5a5;
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+}
+
+#pageTitle{
+	color: green;
+	text-shadow: 1px 1px #0f0f0f;
+	/*text-align: center;*/
+	font-size: 150%;
+}
+
+#pageLinks{
+	font-size: 80%;
+}
+
+#contents{
+	width: 99%;
+	overflow: hidden;
+	line-height: 125%;
+	padding: 7px;
+	border-radius: 8px;
+}
+
+#infoArea{
+	border-radius: 8px;
+	width: 55%;
+	float: left;
+}
+
+#imgArea{
+	position: absolute;
+}
+
+#toolBox{
+	width: 320px;
+	height: 60px;
+	float: left;
+	/*width: 30%;*/
+	padding: 7px;
+	border-radius: 10px;
+}
+
+.userAnswerCheck{
+	width: 60px;
+	height: 60px;
+}
+
+.toolButton{
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+    background-color: transparent;
+	width: 60px;
+	height: 60px;
+}
+
+.toolButton:hover{
+    opacity: 1.0;
+    filter: alpha(opacity=100); /* For IE8 and earlier */
+    background-color: transparent;
+}
+
+.pageContent{
+	text-align: justify;
+}

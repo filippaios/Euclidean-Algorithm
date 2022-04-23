@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/home.css" rel="stylesheet">
+    <link href="css/colors.css" rel="stylesheet">
+    <link href="css/modalDialog.css" rel="stylesheet">
+    <link href="css/dropdown.css" rel="stylesheet">
+    <script src="js/jquery-3.1.0.js"></script>
+    <script src="js/pageContents.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/puzzle.js"></script>
+    <script src="js/canvasHandler.js"></script>
+    <script src="js/params.js"></script>
+    <title>Στάδια επίλυσης Προβλήματος</title>
+  </head>
+  <body onload="initialise()" onresize="sizeDIVs()">
+    <h1>Ο Αλγόριθμος του Ευκλείδη</h1>
+    <div id="toolBox">     
+      <img class="toolButton" id="prevPage" src="img/prev.png" onclick="previousPage();" style="display: none;" title="Προηγούμενο βήμα">
+      <img class="toolButton" id="nxtPage" src="img/nxt.png" onclick="nextPage();" style="display: none;" title="Επόμενο βήμα">
+      <img class="toolButton" id="clearDrawing" src="img/delete.png" onclick="clearDrawing();" style="display: none;" title="Διαγραφή σχεδίου">
+      <img class="toolButton" id="showSolution" src="img/showSolution.png" onclick="solvePuzzle();" style="display: none;" title="Αποκάλυψη λύσης">
+      <div id="tableOfContents">
+      </div>
+    </div>
+    <div id="contents">
+      <div id="infoArea">
+        <div id="textArea">
+          <div id="textToShow">
+          </div>
+          <div id="hintArea">
+            <p id="hint"></p>
+          </div>
+        </div>
+        <div id="imgArea">
+          <div id="images">
+          </div>
+          <div id="question">
+          </div>
+          <div id="canvasArea" style="display: none;">
+            <canvas id="canvas2D" width="600" height="150">
+              Ο φυλλομετρητής σου δεν υποστηρίζει την HTML5. Μάλλον έφτασε η ώρα να τον αναβαθμίσεις...
+            </canvas>
+          </div>
+        </div>
+      </div>
+      <p id="debug"></p>
+    </div>
+    <img class="userAnswerCheck" id="correct" src="img/ok.png" style="display: none;">
+    <img class="userAnswerCheck" id="error" src="img/error.png" style="display: none;">
+
+   
+  </body>
+</html>
