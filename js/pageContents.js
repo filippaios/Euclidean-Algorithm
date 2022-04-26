@@ -4,7 +4,6 @@
 var pgIntroΑ;
 var pgIntroB;
 var pgDataSearchA;
-var pgDataSearchB;
 var pgGeometryA;
 var pgGeometryB;
 var pgGeometryC;
@@ -12,12 +11,6 @@ var pgGeometryD;
 var pgGeometryE;
 var pgSafeDrivingA;
 
-var pgPostmanA;
-var pgPostmanB;
-var pgPostmanC;
-var pgPostmanD;
-var pgPostmanE;
-var pgPuzzle;
 
 function pageNumbering() {
 	var pgIndex = 1;
@@ -38,9 +31,7 @@ function pageNumbering() {
 	pgGeometryE = pgIndex;
 	pgIndex++;
 	pgSafeDrivingA = pgIndex;
-	pgIndex++;		
-	pgPostmanC = pgIndex;
-	pgIndex++;
+	pgIndex++;			
 	maxPage = pgIndex - 1;
 	generateTableOfContents();
 }
@@ -53,7 +44,7 @@ function generateTableOfContents() {
 	menuEntry += "<li><button onclick='selectPage(" + pgGeometryA + ")'>Τυποποιημένοι αλγόριθμοι</li>";
 	menuEntry += "<li><button onclick='selectPage(" + pgGeometryB + ")'>Αλγόριθμοι Μέγιστου Κοινού Διαιρέτη</li>";
 	menuEntry += "<li><button onclick='selectPage(" + pgSafeDrivingA + ")'>Εφαρμογή Αλγόριθμου Ευκλείδη</li>";
-	menuEntry += "<li><button onclick='selectPage(" + pgPostmanA + ")'>Γ. Πρόβλημα λογικής</button></li>";
+	
 	
 	menuEntry += "</ul>";
 	menuEntry += "</div>";
@@ -195,40 +186,10 @@ function definePageContents() {
 
 		case pgSafeDrivingA:
 			pageTitle = "Εφαρμογή Αλγόριθμου Ευκλείδη";
-			pageContent.push("Στην καθημερινότητά μας χρησιμοποιούμε τη γλώσσα των μαθηματικών για να λύσουμε ένα πρόβλημα.");
-			pageContent.push("Για παράδειγμα, στα αυτοκίνητα νέας τεχνολογίας ενσωματώνονται συστήματα ασφάλειας του οδηγού, των επιβατών και των πεζών.");
-			pageContent.push("Ένα τέτοιο σύστημα (μπορεί να) αποτελείται από:");
-			pageContent.push("α. ένα (ή περισσότερα) ραντάρ που εντοπίζει εμπόδια στην πορεία του αυτοκινήτου μετρώντας την απόστασή του από αυτά,");
-			pageContent.push("β. τον ταχογράφο που καταγράφει τη στιγμιαία ταχύτητα του οχήματος,");
-			pageContent.push("γ. το λογισμικό που υπολογίζει και εφαρμόζει αυτόματα την απαιτούμενη επιβράδυνση ώστε το όχημα να αποφύγει τη σύγκρουση.");
-			
-	
-			
-
-			multChoice.push("Πόσα δεδομένα χρειάζεται το λογισμικό του οχήματος για να εκτελέσει ασφαλές φρενάρισμα;");
-			multChoice.push("Ένα");
-			multChoice.push("Δύο");
-			multChoice.push("Τρία");
-			multChoice.push("Η εκφώνηση είναι ελλιπής");
-			expectingUserInput = true;
-			correctAnswer = 3;
+			pageContent.push("");
+			pageContent.push("");
 			break;
-		case pgPostmanC:
-			pageTitle = "Γ. Πρόβλημα λογικής (3/5)";
-			pageContent.push("Η εκφώνηση κάνει λόγο για το άθροισμα των ηλικιών.");
-			pageContent.push("Παρ΄ ότι δε μπορούμε να φτιάξουμε δεύτερη εξίσωση, ας δούμε τι αθροίσματα δίνουν οι τριάδες που εντοπίσαμε:");
-			pageContent.push("1 + 1 + 36 = 38");
-			pageContent.push("1 + 2 + 18 = 21");
-			pageContent.push("1 + 3 + 12 = 16");
-			pageContent.push("1 + 4 + 9 = 14");
-			pageContent.push("1 + 6 + 6 = 13");
-			pageContent.push("2 + 2 + 9 = 13");
-			pageContent.push("2 + 3 + 6 = 11");
-			pageContent.push("3 + 3 + 4 = 10");
-			pageContent.push("Αν γνωρίζαμε τον αριθμό του απέναντι σπιτιού θα δημιουργούσαμε μια δεύτερη εξίσωση...");
-			pageContent.push("Αφού όμως ο αριθμός αυτός δεν αναφέρεται στην εκφώνηση, προφανώς θα πρέπει να <b>αφαιρεθεί</b> από τα δεδομένα.");
-			pagePic.push("postman.jpg");
-			break;
+		
 	}
 }
 
@@ -263,35 +224,9 @@ function showHint() {
 			/*document.getElementById("hint").innerHTML=hint;
 			hintLevel++;*/
 			break;
-		case pgSafeDrivingA:
-			switch (hintLevel) {
-				default:
-					hint = "Η σωστή απάντηση είναι <i>τρία</i> δεδομένα. Όμως <b>ποια</b> είναι αυτά;";
-					break;
-			}
-			/*document.getElementById("hint").innerHTML=hint;
-			hintLevel++;*/
-			break;
 		
-		case pgPostmanA:
-			if (hintLevel >= 0) {
-				hint = "<br>Ας ξεκινήσουμε από το προφανές δεδομένο: το πλήθος των αγνώστων ηλικιών είναι 3. Ας τις συμβολίσουμε με α, β και γ.";
-			}
-			if (hintLevel >= 1) {
-				hint += "<br>Γνωρίζουμε ακόμη ότι το γινόμενο των ηλικιών ισούται με 36, άρα ισχύει<br><code>α <sup>.</sup> β <sup>.</sup> γ = 36</code>.";
-			}
-			if (hintLevel >= 2) {
-				hint += "<br>Έχουμε λοιπόν μια εξίσωση με τρεις αγνώστους. Δυστυχώς δεν έχουμε άλλη εξίσωση αφού το άθροισμα ισούται με τον αριθμό του απέναντι σπιτιού, αλλά αυτός δεν μας έχει δοθεί, δηλαδή <code>α + β + γ = <span style='color:red'>.. ; ..</span></code>";
-			}
-			if (hintLevel >= 3) {
-				hint += "<br>Για να προσδιορίσουμε τις τιμές των τριών αγνώστων χρειαζόμαστε πρόσθετα δεδομένα, αλλά ποια μπορεί να είναι αυτά; Τι ρόλο μπορεί να παίζει το χρώμα των μαλλιών;";
-			}
-			if (hintLevel >= 4) {
-				hint += "<br>Όπως θα φανεί από τη συνέχεια της ανάλυσης, τα δεδομένα του προβλήματος είναι τέσσερα. Όμως ποια ακριβώς είναι αυτά;";
-			}
-			/*document.getElementById("hint").innerHTML=hint;
-			hintLevel++;*/
-			break;
+		
+		
 	}
 	currentHint = document.getElementById("hint").innerHTML = hint;
 	hintLevel++;
@@ -300,3 +235,5 @@ function showHint() {
 function clearHint() {
 	document.getElementById("hint").innerHTML = "";
 }
+
+

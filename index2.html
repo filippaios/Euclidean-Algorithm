@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        h1 {
+            margin-top: 1em;
+        }
+
+        #number1, #number2 {
+            width: 100px;
+        }
+
+        #result {
+            font-size: 1.3em;
+            text-align: left;
+        }
+
+        .form-control {
+            margin-left: 1em;
+            margin-bottom: 1em;
+            text-align: right;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+       
+        function findGreatestCommonDivisor(a, b) {
+            if (!a || !b) {
+                console.log("not a number");
+                return "not a number";
+            }
+
+            if (b > a) {
+                let temp = a;
+                a = b;
+                b = temp;
+            }
+
+            if (a % b == 0) {
+                return b;
+            }
+            else {
+                return findGreatestCommonDivisor(b, a % b);
+            }
+        }
+
+        function getGreatestCommonDivisor(a, b) {
+
+            $("#result").html("");
+
+            if (a == "" || b == "") {
+                return;
+            }
+
+            if (a == 0 || b == 0) {
+                $("#result").html("Zero not allowed");
+                return;
+            }
+
+            let result = findGreatestCommonDivisor(parseInt(a), parseInt(b));
+            console.log(result);
+            $("#result").html(result);
+        }
+
+        $("#number1").on("change", function () {
+            getGreatestCommonDivisor($("#number1").val(), $("#number2").val());
+        });
+
+        $("#number2").on("change", function () {
+            getGreatestCommonDivisor($("#number1").val(), $("#number2").val());
+        });
+
+           
+            
+
+    </script>
+    <div class="container">
+        <h1>Euclid's algorithm</h1>
+        <p>
+            Type two numbers to get their greatest common divisor (GCD)
+            <div class="row">
+                <div class="col-xs-4"></div>
+                <input class="form-control" id="number1" name="first-number" />
+                <input class="form-control" id="number2" name="second-number" />
+
+            </div>
+            <div id="result"></div>
+    </div>
+
+
+</body>
+</html>
