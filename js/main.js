@@ -229,6 +229,3 @@ function sizeDIVs(){
     });
 }
 
-function showAppID(){
-	window.open("index_DS_II.html","_newtab");
-}
