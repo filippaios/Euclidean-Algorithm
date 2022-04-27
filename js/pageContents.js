@@ -10,6 +10,8 @@ var pgGeometryC;
 var pgGeometryD;
 var pgGeometryE;
 var pgSafeDrivingA;
+var pgSafeDrivingB;
+
 
 
 function pageNumbering() {
@@ -31,7 +33,9 @@ function pageNumbering() {
 	pgGeometryE = pgIndex;
 	pgIndex++;
 	pgSafeDrivingA = pgIndex;
-	pgIndex++;			
+	pgIndex++;
+	pgSafeDrivingB = pgIndex;
+	pgIndex++;
 	maxPage = pgIndex - 1;
 	generateTableOfContents();
 }
@@ -44,6 +48,7 @@ function generateTableOfContents() {
 	menuEntry += "<li><button onclick='selectPage(" + pgGeometryA + ")'>Τυποποιημένοι αλγόριθμοι</li>";
 	menuEntry += "<li><button onclick='selectPage(" + pgGeometryB + ")'>Αλγόριθμοι Μέγιστου Κοινού Διαιρέτη</li>";
 	menuEntry += "<li><button onclick='selectPage(" + pgSafeDrivingA + ")'>Εφαρμογή Αλγόριθμου Ευκλείδη</li>";
+	menuEntry += "<li><button onclick='selectPage(" + pgSafeDrivingB + ")'>Πηγές Μαθησιακού Αντικειμένου</li>";
 	
 	
 	menuEntry += "</ul>";
@@ -186,13 +191,58 @@ function definePageContents() {
 
 		case pgSafeDrivingA:
 			pageTitle = "Εφαρμογή Αλγόριθμου Ευκλείδη";
-			pageContent.push("");
-			pageContent.push("");
+			var codeBlock = '<div class="main">' +
+				' <div class="head">' +
+				' <h2> ΜΚΔ (Εύρεση Μέγιστου Κοινού Διαιρέτη) </h2>' +
+				'</div>' +
+				' <div style="text-align: center">'+
+				' <input type="number" placeholder="Enter R1" id="r1" required> <br> <br>' +
+				' <input type="number" placeholder="Enter R2" id="r2" required> <br> <br>' +
+				'  <button class="btn" type="button" onclick="getInputValue();">Get Value</button>' +
+				'  </div>' +
+				'  <hr>' +
+				' <div class="result">' +
+				'   GCD = <span id="gcd" style="color: #ff0000"></span>' +
+				' </div>'+
+			'</div>';			
+			pageContent.push(codeBlock);
+			break;
+
+		case pgSafeDrivingB:
+			pageTitle = "Πηγές Μαθησιακού Αντικημένου";
+			var codeBlock = '<a href="http://ebooks.edu.gr/ebooks/v/html/8547/2716/Pliroforiki_B-Lykeiou_html-empl/index2_2.html">Πληροφορική Β Λυκείου</a>';
+			var codeBlock2 = '<a href="http://users.sch.gr/aistos/download/maths%20pdf/mkd.pdf">Τρόποι Υπολογισμού ΜΚΔ</a>';
+			var codeBlock3 = '<a href="https://eclass.upatras.gr/modules/document/file.php/CULTURE158/ita-section-15.pdf">Πανεπιστήμιο Πατρών</a>';
+			var codeBlock4 = '<a href="https://photodentro.edu.gr/v/item/ds/8521/10508">Φωτόδεντρο</a>';
+			var codeBlock5 = '<a href="https://www.rajlama.com.np/blog/html-and-javascript-code-to-find-the-gcd-greatest-common-division-of-two-numbers">Javascript-HTML Code</a>';
+
+			pageContent.push(codeBlock);
+			pageContent.push(codeBlock2);
+			pageContent.push(codeBlock3);
+			pageContent.push(codeBlock4);
+			pageContent.push(codeBlock5);
 			break;
 		
 	}
 }
 
+function gcd(a, b) {
+	var R;
+	while ((a % b) > 0) {
+		R = a % b;
+		a = b;
+		b = R;
+	}
+	return b;
+}
+
+function getInputValue() {
+	var r1 = document.getElementById("r1").value;
+	var r2 = document.getElementById("r2").value;
+	console.log(r1);
+	console.log(r2);
+	document.getElementById("gcd").innerHTML = gcd(r1, r2);
+}
 function showHint() {
 	var hint = "";
 	clearHint();
