@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0047)https://photodentro.edu.gr/v/item/ds/8521/10508 -->
+<html><head xmlns="http://www.w3.org/1999/xhtml"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="Content-Language" content="el">
+		
+		<title>Φωτόδεντρο - Προβολή αντικειμένου</title>
+		<script type="text/javascript" async="" src="./Φωτόδεντρο - Προβολή αντικειμένου_files/matomo.js.download"></script><script type="text/javascript" src="./Φωτόδεντρο - Προβολή αντικειμένου_files/jwplayer.js.download"></script>
+		<script type="text/javascript" src="./Φωτόδεντρο - Προβολή αντικειμένου_files/jquery-1.10.0.min.js.download"> </script>
+		<script src="./Φωτόδεντρο - Προβολή αντικειμένου_files/jquery-ui-1.10.3.custom.js.download"></script>
+		<script src="./Φωτόδεντρο - Προβολή αντικειμένου_files/jquery-ui-1.10.3.custom.min.js.download"></script>
+		<script type="text/javascript" src="./Φωτόδεντρο - Προβολή αντικειμένου_files/swfobject.js.download"></script>
+		
+		<script src="./Φωτόδεντρο - Προβολή αντικειμένου_files/KalturaEmbedCodeGenerator-1.0.6.min.js.download"></script>
+
+		<link rel="stylesheet" href="./Φωτόδεντρο - Προβολή αντικειμένου_files/jquery-ui-1.10.3.custom.css" type="text/css">
+		<link rel="stylesheet" href="./Φωτόδεντρο - Προβολή αντικειμένου_files/styles.css">
+		<link rel="shortcut icon" href="https://photodentro.edu.gr/v/favicon.ico" type="image/x-icon">
+		<meta property="og:title" content="Ο αλγόριθμος του Ευκλείδη">
+		<meta property="og:image" content="/v/images/logoLOR.png">
+	</head>
+
+
+	<body style="background-color: rgb(255, 255, 255);">
+	
+	
+	<div id="dvContent" style="display:none"><ul></ul></div>	
+
+		<div id="generic_wrapper">
+			<div id="html_container" class="content_show" style="display: block; height: 807px;"><iframe src="./Φωτόδεντρο - Προβολή αντικειμένου_files/saved_resource.html" id="content_frame"></iframe></div>
+			<div id="img_container" class="content_show" style="display: none; height: 707px;"></div>
+			<div id="flash_container" class="content_show" align="middle" style="display: none;"></div>
+			
+		</div>      		
+
+			
+		
+
+<script type="text/javascript">
+
+
+var kas;
+var callback = function (e){
+   if(e.success) {
+
+		$('#flash_container').addClass("content_show");
+   }
+   else{
+	$('.noflash').show();
+   }
+   $('#startloading').hide();
+};
+
+
+$('#content_frame').load(function() {
+      $('#startloading').hide();
+});
+
+
+
+
+
+        $('#html_container').hide();
+	$('#flash_container').hide();
+	$('#img_container').hide();
+	$('#player').hide();
+	$('#kalturaplayer').hide();
+
+
+
+	
+		$('#video_wrapper').hide();
+		$('#generic_wrapper').show();
+		$('#generic_nopreview').hide();
+		$('#html_container').show();
+                $('#content_frame').attr('src','https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/');
+
+		$('body').css('background-color','#fff');
+
+	
+
+
+
+
+
+
+
+
+
+
+$(document).ready(function(){
+		$('#html_container').css('height', $(window).height()-100);
+		//$('#flash_content').css('height', $(window).height()*(3/4));
+		$('#img_container').css('height', $(window).height()-200);
+		
+
+		var myVideoWidth = $(".kWidgetIframeContainer");
+		if(myVideoWidth.width()>900) myVideoWidth.css('width',900);
+		if(myVideoWidth.height()>700) myVideoWidth.css('height',700);
+
+	});
+
+
+$('#content_img').load(function() {
+
+  		var maxWidth = $('#img_container').width();
+        var maxHeight = $('#img_container').height();
+
+		var pad=10;
+        var ratio = 0;
+        var width = $(this).width();
+        var height = $(this).height()
+
+        if (width > maxWidth) {
+             ratio = maxWidth / width;
+             $('#img_container').css('width', maxWidth+pad);
+             $('#img_container').css('height', (height * ratio)+pad);
+        }
+
+        if (height > maxHeight) {
+            ratio = maxHeight / height;
+            $('#img_container').css('height', maxHeight+pad);
+            $('#img_container').css('width', (width * ratio) + pad);
+			   ratio = maxHeight / height;
+        }
+
+		$('#img_container').css('min-height', (height* 50 / width)+pad);
+		$('#img_container').css('max-height', (height* maxWidth / width)+pad);
+
+		$( "#img_container" ).resizable({
+			aspectRatio: width/height
+		});
+
+		$('#startloading').hide();
+
+});
+
+
+
+
+
+
+$('#hideDisplay').click(function (){
+		$('.generic_banner').removeClass('banner_show').addClass('banner_hide');
+		$('.generic_info').removeClass('info_show').addClass('info_hide');
+		$('#html_container').removeClass('content_show').addClass('content_hide');
+		$('#flash_container').removeClass('content_show').addClass('content_hide');
+		$('#img_container').removeClass('content_show').addClass('content_hide');
+		$('#generic_nopreview').removeClass('content_show').addClass('content_hide');
+    $('#emecontent_wrapper').removeClass('content_show').addClass('content_hide');
+		$('#hideDisplay').hide();
+		$('#showDisplay').show();
+		$('#html_container').css('height', $(window).height());
+		$('#content_frame').css('height', $(window).height());
+    $('#emecontent_wrapper').css('height', $(window).height());
+});
+
+$("#showDisplay").click(function (){
+//alert("show");
+	$('.generic_banner').removeClass('banner_hide').addClass('banner_show');
+	$('.generic_info').removeClass('info_hide').addClass('info_show');
+	$('#showDisplay').hide();
+	$('#hideDisplay').show();
+	$('#html_container').removeClass('content_hide').addClass('content_show');
+	$('#flash_container').removeClass('content_hide').addClass('content_show');
+	$('#img_container').removeClass('content_hide').addClass('content_show');
+	$('#generic_nopreview').removeClass('content_hide').addClass('content_show');
+  $('#emecontent_wrapper').removeClass('content_hide').addClass('content_show');
+});
+
+function showInstructions(){
+	if (!$("#instruct").is(":visible")) {
+		$('#instruct').css('display','inline-block');
+		if($('#cboxTitle').width()<1200)$('.newTabLink').html("&nbsp;").css('text-decoration','none');
+	}else{
+		$('#instruct').css('display','none');
+		if($('#cboxTitle').width()>700)$('.newTabLink').html("&nbsp;").css('text-decoration','none'); //Άνοιγμα &#40;σε νέο παράθυρο&#41; underline
+		}
+
+}
+
+</script>
+
+
+
+
+<script type="text/javascript">
+  
+	  
+	  <!-- Matomo -->
+	  var _paq = window._paq = window._paq || [];
+	  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+	  // you can set up to 5 custom variables for each visitor
+
+
+
+    var collectionName = $(".generic_info_txt b").text().trim();
+    var counter = 1;
+    console.log( "collectionName:" +collectionName );
+
+    //index = [1,2]
+    var taxonArray = [];
+    $( "#classification-taxonpath_value span" ).each(function( index ) {
+      console.log( index + ": " + $( this ).text().trim() );
+      var ctv =  $( this ).text().trim();
+      var ctv2 = ctv.split(" > ");
+      if (ctv2.length < 2){
+        if (!taxonArray.includes(ctv)) taxonArray.push(ctv);
+      }else{
+        var onlyUpToSecondLevel = ctv2[0] + " > " + ctv2[1];
+        if (!taxonArray.includes(onlyUpToSecondLevel)) taxonArray.push(onlyUpToSecondLevel);
+      }
+
+    });
+
+    console.log(taxonArray);
+
+    var iii;
+    for (iii = 0; (iii < taxonArray.length && iii<2); iii++) {
+      _paq.push(['setCustomVariable', counter, 'PHOTO_LSUBJECT', taxonArray[iii].trim(), 'page']);
+      counter = counter + 1;
+    }
+
+
+    // index = 3
+    counter = 3;
+    _paq.push(['setCustomVariable', counter, 'PHOTO_COLLECTION', collectionName, 'page']);
+    counter = counter + 1;
+
+    //index = [4,5]
+    counter = 4;
+    $( "#educational-context_value span" ).each(function( index ) {
+      console.log( index + "context: " + $( this ).text().trim().replace(",", "") );
+       if (index<=1){
+        _paq.push(['setCustomVariable', counter, 'PHOTO_LGRADE', $( this ).text().trim().replace(",", ""), 'page']);
+        counter = counter + 1;
+        }
+    });
+
+
+    //index = [6,7,8]
+    counter = 6;
+    $( "#educational-learningresourcetype_value span" ).each(function( index ) {
+      console.log( index + "lrt: " + $( this ).text().trim().replace(",", "") );
+      if (index<=2){
+        _paq.push(['setCustomVariable', counter, 'PHOTO_LTYPE', $( this ).text().trim().replace(",", ""), 'page']);
+        counter = counter + 1;
+        }
+    });
+
+
+	  _paq.push(['trackPageView']);
+	  _paq.push(['enableLinkTracking']);
+	  (function() {
+		  var u="//analytics.dschool.edu.gr/";
+	    _paq.push(['setTrackerUrl', u+'matomo.php']);
+	    _paq.push(["setSiteId", "4"]);
+	    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+	    g.type='text/javascript'; g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+	  })();
+
+
+</script>
+
+</body></html>

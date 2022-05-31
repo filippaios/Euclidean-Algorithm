@@ -1,0 +1,487 @@
+
+<!-- saved from url=(0081)https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/ -->
+<html class="ui-mobile"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!--<base href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/">--><base href=".">    
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Ο Αλγόριθμος του Ευκλείδη</title>
+	
+    <link rel="stylesheet" href="./MA.min.css">
+    <link rel="stylesheet" href="./jquery.mobile.icons.min.css">
+    <link rel="stylesheet" href="./jquery.mobile.structure-1.4.5.min.css"> 
+    <script src="./jquery-1.11.1.min.js.download"></script> 
+    <script src="./jquery.mobile-1.4.5.min.js.download"></script>
+
+    <script type="text/javascript">
+                        
+        var isPaused = false;        
+        var Line = [];
+        var X = [];
+        var Y = [];
+        var Z = [];
+        var Z2 = [];        
+        var Output = [];
+        var timeout;        
+        var lastStep = 2;
+        var CurrentStep = 0;
+        var maxRows = 30;
+ 
+        
+        
+        
+        function CreateProgram() {
+                        
+            var xVal = parseInt($("#number-A").val());
+            var yVal = parseInt($("#number-B").val());
+            var zVal = 0;            
+
+            Line[0] = 1; X[0] = ""; Y[0] = ""; Z[0] = ""; Z2[0] = ""; Output[0] = "";
+            Line[1] = 2; X[1] = xVal.toString(); Y[1] = yVal.toString(); Z[1] = ""; Z2[1] = ""; Output[1] = "";
+            Line[2] = 3; X[2] = ""; Y[2] = ""; Z[2] = yVal.toString(); Z2[2] = ""; Output[2] = "";
+            zVal = yVal;
+            var i = 3;
+            if(zVal == 0) {
+                Line[i] = 4; X[i] = ""; Y[i] = ""; Z[i] = ""; Z2[i] = ""; Output[i] = "";
+            }          
+
+            while(zVal != 0) {
+
+                Line[i] = 4; X[i] = ""; Y[i] = ""; Z[i] = ""; Z2[i] = "ΑΛΗΘΗΣ"; Output[i] = "";
+                i++;
+                zVal = xVal % yVal;
+                Line[i] = 5; X[i] = ""; Y[i] = ""; Z[i] = zVal; Z2[i] = ""; Output[i] = "";
+                i++;
+                xVal = yVal;
+                Line[i] = 6; X[i] = yVal.toString(); Y[i] = ""; Z[i] = ""; Z2[i] = ""; Output[i] = "";
+                i++;
+                yVal = zVal;
+                Line[i] = 7; X[i] = ""; Y[i] = zVal.toString(); Z[i] = ""; Z2[i] = ""; Output[i] = "";
+                i++;
+
+            }       
+
+            Line[i] = 4; X[i] = ""; Y[i] = ""; Z[i] = ""; Z2[i] = "ΨΕΥΔΗΣ"; Output[i] = "";
+            i++;
+            Line[i] = 9; X[i] = ""; Y[i] = ""; Z[i] = ""; Z2[i] = ""; Output[i] = xVal.toString();
+            i++;
+            Line[i] = 10; X[i] = ""; Y[i] = ""; Z[i] = ""; Z2[i] = ""; Output[i] = "";
+            
+            lastStep = i;
+        }
+        
+        
+        function FirstSteps() {
+            Clear();
+            Line[0] = 1; X[0] = ""; Y[0] = ""; Z[0] = ""; Z2[0] = ""; Output[0] = "";
+            Line[1] = 2; X[1] = ""; Y[1] = ""; Z[1] = ""; Z2[1] = ""; Output[1] = "";                  
+        }
+             
+        
+        $(document).ready(function() {           
+                            
+            Init();
+            
+            $("#btnEnter").click(function() { 
+                if($("#number-A").val() != "" && $("#number-B").val() != "" && $("#number-A").val().toString[0] != 'e' && $("#number-B").val().toString[0] != 'e') {
+                    CreateProgram();                
+                    X[1] = parseInt($("#number-A").val());
+                    Y[1] = parseInt($("#number-B").val());
+                    UpdateVarTable();
+                    if(isPaused == false) {
+                        RunProgram();    
+                    }
+                } else {
+                    alert('Παρακαλώ εισάγετε αριθμητικές τιμές στις μεταβλητές Χ και Υ');
+                    Clear();
+                    ClearValueTable();
+                }
+            });            
+            
+            $("#btnPlay").click(function() {   
+                if(CurrentStep == 0) {
+                    FirstSteps();
+                }    
+                if(CurrentStep == lastStep + 1) {                                        
+                    ClearValueTable();
+                    FirstSteps();
+                }                
+                RunProgram();
+                if(isPaused == false) {                    
+                    isPaused = false;                    
+                }                      
+            });       
+            
+            $("#btnStop").click(function() {                    
+                Clear();
+                ClearValueTable();
+            });
+            
+            
+            $("#btnPause").click(function() {
+                clearTimeout(timeout);    
+                isPaused = true;
+            });
+            
+                        
+            $("#btnForward").click(function() {                                
+                if(CurrentStep == 0) {                    
+                    FirstSteps();
+                }                
+                if(CurrentStep < Line.length) {
+                    DisplayStep(CurrentStep);
+                    clearTimeout(timeout);
+                    isPaused = true;
+                    CurrentStep++;                    
+                }                                
+            });  
+            
+            $("#btnBackward").click(function() {
+                if(CurrentStep > Line.length) {                    
+                    CurrentStep = Line.length + 1;
+                }                
+                if(CurrentStep > 1) {
+                    clearTimeout(timeout);    
+                    isPaused = true;
+                    DisplayStep(CurrentStep-2);
+                    CurrentStep-=1;                                                                  
+                }
+            });                      
+        });
+        
+        
+        
+        function Init() {
+
+            for(i = 0; i < maxRows; i++) {
+                var LineID = "LineNumber-" + i.toString();
+                var XID = "X-" + i.toString();
+                var YID = "Y-" + i.toString();
+                var ZID = "Z-" + i.toString();
+                var Z2ID = "Z2-" + i.toString();                
+                var OutputID = "Output-" + i.toString();
+                var markup = "<tr id=row-" + i.toString() + "><td id=" + LineID + "></td><td id=" + XID + "></td><td id=" + YID + "></td><td id=" + ZID + "></td><td id=" + Z2ID + "></td><td id=" + OutputID + "></td></tr>";
+                $("#vTable tbody").append(markup);   
+                $("#vTable tbody tr").hide();
+            }            
+
+            $("#vTable th").css('border','2px solid black');
+            $("#vTable td").css('border','2px solid black');
+            $("#vTable thead th").css('text-align','center');
+            $("#vTable tbody td").css('text-align','center');    
+        }
+        
+        
+        function ClearValueTable() {
+            for(var i = 0; i < maxRows; i++) {
+                $("#LineNumber-" + i.toString()).text("");
+                $("#X-" + i.toString()).text("");
+                $("#Y-" + i.toString()).text("");
+                $("#Z-" + i.toString()).text("");
+                $("#Z2-" + i.toString()).text("");                
+                $("#Output-" + i.toString()).text("");                
+            }             
+        }
+        
+        function Clear() {    
+            Line = [];
+            X = [];
+            Y = [];
+            Z = [];
+            Z2 = [];            
+            Output = [];            
+            if(timeout != null) {
+                clearTimeout(timeout);
+            }              
+            for(var i = 0; i < 10; i++) {
+                $("#AlgorithmLine-"+i.toString()).css("background-color","");
+                $("#AlgorithmLine-"+i.toString()).css("color","");
+            }            
+            $("#imgFlowChart").attr("src","images/stage0.svg");
+            $("#number-A").val(" ");
+            $("#number-B").val(" ");              
+            CurrentStep = 0;
+            lastStep = 2;
+            isPaused = false;
+            $("#vTable tbody tr").hide();
+        }
+        
+        
+        
+        function DisplayStep(step) {
+            
+                if(Line[step] == 2) {
+                    clearTimeout(timeout);
+                    $("#number-A").val(Math.floor((Math.random() * 100) + 1));
+                    $("#number-B").val(Math.floor((Math.random() * 100) + 1));
+                    $("#VarDialog").popup("open");
+                }             
+            
+                ProgramPointer(Line[step] - 1);
+
+                switch(Line[step]) {
+                    case 1:
+                        $("#imgFlowChart").attr("data","images/stage1.svg");
+                    break;
+                    case 2:
+                        $("#imgFlowChart").attr("data","images/stage2.svg");                        
+                    break;
+                    case 3:
+                        $("#imgFlowChart").attr("data","images/stage3.svg");                        
+                    break;                        
+                    case 4:
+                        $("#imgFlowChart").attr("data","images/stage4.svg");                       
+                    break;                    
+                    case 5:
+                        $("#imgFlowChart").attr("data","images/stage5.svg");                       
+                    break;                                        
+                    case 6:
+                        $("#imgFlowChart").attr("data","images/stage5.svg");                       
+                    break;
+                    case 7:
+                        $("#imgFlowChart").attr("data","images/stage5.svg");                       
+                    break;
+                    case 8:
+                        $("#imgFlowChart").attr("data","images/stage4.svg");                       
+                    break;
+                    case 9:
+                        $("#imgFlowChart").attr("data","images/stage6.svg");                       
+                    break;
+                    case 10:
+                        $("#imgFlowChart").attr("data","images/stage7.svg");
+                    break;                        
+                }
+
+            
+            $("#vTable tbody tr").hide();
+
+            ClearValueTable();          
+
+            for(var i = 0; i < step+1; i++) {
+                if(Line[i] != 1 && Line[i] != 10) {
+                $("#LineNumber-" + i.toString()).text(Line[i]);
+                $("#X-" + i.toString()).text(X[i]);
+                $("#Y-" + i.toString()).text(Y[i]);
+                $("#Z-" + i.toString()).text(Z[i]);
+                $("#Z2-" + i.toString()).text(Z2[i]);                
+                $("#Output-" + i.toString()).text(Output[i]);
+                $("#row-" + i.toString()).show();  
+                }
+            }
+
+        }
+
+        function UpdateVarTable() {
+            var row = CurrentStep - 1;
+            $("#LineNumber-" + row.toString()).text(Line[row]);
+            $("#X-" + row.toString()).text(X[row]);            
+            $("#Y-" + row.toString()).text(Y[row]);
+            $("#Z-" + row.toString()).text(Z[row]);
+            $("#Z2-" + row.toString()).text(Z2[row]);            
+            $("#Output-" + row.toString()).text(Output[row]);            
+        }          
+        
+        
+        function ProgramPointer(pointer) {
+            for(var i = 0; i < 10; i++) {
+                $("#AlgorithmLine-"+i.toString()).css("background-color","");
+                $("#AlgorithmLine-"+i.toString()).css("color","");
+            }      
+            $("#AlgorithmLine-"+pointer.toString()).css("background-color","#ffc01b"); 
+            $("#AlgorithmLine-"+pointer.toString()).css("color","black");            
+        }
+        
+        
+        function RunProgram() {
+            timeout = setTimeout(RunProgram, 1000);                                                    
+            if(CurrentStep > lastStep - 1) {
+                clearTimeout(timeout);      
+            }
+            DisplayStep(CurrentStep);
+            CurrentStep++;                                        
+        };
+        
+    </script>    
+    
+</head>
+    
+    
+<body class="ui-mobile-viewport ui-overlay-a"><div data-role="page" data-url="/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/" tabindex="0" class="ui-page ui-page-theme-a ui-page-active" style="">
+
+ <div style="display: none;" id="VarDialog-placeholder"><!-- placeholder for VarDialog --></div>    
+    
+    <div class="hidden">
+        <script type="text/javascript">
+            <!--//--><![CDATA[//><!--
+                var images = new Array()
+                function preload() {
+                    for (i = 0; i < preload.arguments.length; i++) {
+                        images[i] = new Image()
+                        images[i].src = preload.arguments[i]
+                    }
+                }
+                preload(
+                    "images/stage1.svg",
+                    "images/stage2.svg",
+                    "images/stage3.svg",
+                    "images/stage4.svg",
+                    "images/stage5.svg"
+                    "images/stage6.svg"
+                    "images/stage7.svg"
+                )
+            //--><!]]>
+        </script>
+    </div>        
+    
+    
+<table data-role="table" data-mode="reflow" class="ui-responsive ui-table ui-table-reflow" style="display:table;font-size: 2vw">
+    <thead>
+            <tr>
+                <td data-colstart="1">
+                    <button id="btnPlay" title="Έναρξη εκτέλεσης του προγράμματος" class="ui-btn ui-icon-action ui-btn-icon-left">Έναρξη</button>
+                </td>
+                <td data-colstart="2">
+                    <button id="btnStop" title="Τερματισμός εκτέλεσης του προγράμματος" class="ui-btn ui-icon-delete ui-btn-icon-left">Τερματισμός</button>
+                </td>
+                <td data-colstart="3">
+                    <button id="btnPause" title="Παύση εκτέλεσης" class="ui-btn ui-icon-clock ui-btn-icon-left">Παύση</button>
+                </td>
+                <td data-colstart="4">
+                    <button id="btnBackward" title="Εκτέλεση του προηγούμενου βήματος" class="ui-btn ui-icon-arrow-l ui-btn-icon-left">Πίσω</button>                 
+                </td>
+                <td data-colstart="5">
+                    <button id="btnForward" title="Εκτέλεση του επόμενου βήματος" class="ui-btn ui-icon-arrow-r ui-btn-icon-left">Μπροστά</button>
+                </td>
+                <td data-colstart="6">
+                    <h3 style="vertical-align: middle;text-align: center;font-size: 2vw">Ο Αλγόριθμος του Ευκλείδη</h3>
+                </td>
+                <td data-colstart="7">
+                    <a href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/#popup" data-rel="popup" data-position-to="window" class="my-tooltip-btn ui-btn ui-alt-icon ui-nodisc-icon ui-btn-inline ui-icon-info ui-btn-icon-notext" title="Πληροφορίες" aria-haspopup="true" aria-owns="popup" aria-expanded="false"></a>
+                    <div style="display: none;" id="popup-placeholder"><!-- placeholder for popup --></div>                     
+                </td>
+            </tr>        
+    </thead>
+</table>    
+
+    
+<div class="ui-grid-a">
+    
+    <div class="ui-block-a">
+        
+        <div data-role="tabs" id="ProgramTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+              <div data-role="navbar" class="ui-navbar" role="navigation">
+                <ul class="ui-grid-a ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                    <li class="ui-block-a ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="program" aria-labelledby="ui-id-1" aria-selected="false"><a href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/#program" style="font-size: 1.3vw" data-ajax="false" class="ui-link ui-btn ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">Αλγόριθμος</a></li>
+                    <li class="ui-block-b ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="flowchart" aria-labelledby="ui-id-2" aria-selected="true"><a href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/#flowchart" style="font-size: 1.3vw" data-ajax="false" class="ui-link ui-btn ui-tabs-anchor ui-btn-active" role="presentation" tabindex="-1" id="ui-id-2">Διάγραμμα ροής</a></li>                      
+                </ul>
+              </div>
+                  <div id="program" class="ui-body-d ui-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-1" role="tabpanel" aria-expanded="false" aria-hidden="true" style="display: none;">
+                        <br><b>
+                        <ol data-role="listview" class="ui-listview" style="font-size: 1.3vw">                                        
+                        <li id="AlgorithmLine-0" class="ui-listview-item ui-li-static ui-body-inherit ui-first-child" style=""><font color="#3366ff">ΑΛΓΟΡΙΘΜΟΣ</font> Ευκλείδης</li>
+                        <li id="AlgorithmLine-1" class="ui-listview-item ui-li-static ui-body-inherit" style=""><font color="#3366ff">ΔΙΑΒΑΣΕ</font> x, y </li>
+                        <li id="AlgorithmLine-2" class="ui-listview-item ui-li-static ui-body-inherit" style="">z ← y</li>
+                        <li id="AlgorithmLine-3" class="ui-listview-item ui-li-static ui-body-inherit" style=""><font color="#3366ff">ΟΣΟ</font> z ≠ 0 <font color="#3366ff">ΕΠΑΝΑΛΑΒΕ</font></li>
+                        <li id="AlgorithmLine-4" class="ui-listview-item ui-li-static ui-body-inherit" style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z ← x<font color="#3366ff"> MOD </font> y</li>
+                        <li id="AlgorithmLine-5" class="ui-listview-item ui-li-static ui-body-inherit" style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x ← y</li>
+                        <li id="AlgorithmLine-6" class="ui-listview-item ui-li-static ui-body-inherit" style="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y ← z</li>
+                        <li id="AlgorithmLine-7" class="ui-listview-item ui-li-static ui-body-inherit"><font color="#3366ff">ΤΕΛΟΣ_ΕΠΑΝΑΛΗΨΗΣ</font> </li>
+                        <li id="AlgorithmLine-8" class="ui-listview-item ui-li-static ui-body-inherit"><font color="#3366ff">ΓΡΑΨΕ</font> x</li>
+                        <li id="AlgorithmLine-9" class="ui-listview-item ui-li-static ui-body-inherit ui-last-child"><font color="#3366ff">ΤΕΛΟΣ</font> Ευκλείδης</li>
+                        </ol>                        
+                        </b>                
+                  </div>
+
+                  <div id="flowchart" class="ui-body-d ui-content ui-tabs-panel ui-widget-content ui-corner-bottom" aria-labelledby="ui-id-2" role="tabpanel" aria-expanded="true" aria-hidden="false" style="display: block;">
+                        <object id="imgFlowChart" data="./stage5.svg" type="image/svg+xml" height="600" src="images/stage0.svg"></object>
+                        <!--
+                        <img id='imgFlowChart' src="images/stage0.svg" style="width:auto;height:65%;margin-left: auto;margin-right: auto;display: block;">
+                        -->
+                  </div>            
+            
+            
+        </div>        
+    </div>
+    
+    <div class="ui-block-b">
+        <div data-role="tabs" id="DataTabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+          <div data-role="navbar" class="ui-navbar" role="navigation">
+            <ul class="ui-grid-a ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">              
+                <li class="ui-block-a ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="datatable" aria-labelledby="ui-id-3" aria-selected="true"><a href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/#datatable" style="font-size: 1.3vw" data-ajax="false" class="ui-link ui-btn ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-3">Πίνακας τιμών</a></li>
+                <li class="ui-block-b ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="problem" aria-labelledby="ui-id-4" aria-selected="false"><a href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/#problem" style="font-size: 1.3vw" data-ajax="false" class="ui-link ui-btn ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-4">Το πρόβλημα</a></li>                 
+            </ul>
+          </div>
+            
+
+
+         
+          <div id="datatable" style="overflow:scroll; height:82vh;" aria-labelledby="ui-id-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="true" aria-hidden="false">
+              <br>
+              
+              <table data-role="table" id="vTable" data-mode="reflow" class="ui-responsive table-stroke ui-table ui-table-reflow" style="display:table;font-size :1vw">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%; border: 2px solid black; text-align: center;" data-colstart="1">Γραμμή εντολής</th>
+                            <th style="width: 10%; border: 2px solid black; text-align: center;" data-colstart="2">x</th>
+                            <th style="width: 10%; border: 2px solid black; text-align: center;" data-colstart="3">y</th>
+                            <th style="width: 10%; border: 2px solid black; text-align: center;" data-colstart="4">z</th>
+                            <th style="width: 30%; border: 2px solid black; text-align: center;" data-colstart="5">Συνθήκη z ≠ 0</th>      
+                            <th style="width: 10%; border: 2px solid black; text-align: center;" data-colstart="6">Έξοδος</th>
+                        </tr>
+                    </thead>
+                  
+                    <tbody>
+
+                    <tr id="row-0" style="display: none;"><td id="LineNumber-0" style="border: 2px solid black; text-align: center;"></td><td id="X-0" style="border: 2px solid black; text-align: center;"></td><td id="Y-0" style="border: 2px solid black; text-align: center;"></td><td id="Z-0" style="border: 2px solid black; text-align: center;"></td><td id="Z2-0" style="border: 2px solid black; text-align: center;"></td><td id="Output-0" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-1" style="display: none;"><td id="LineNumber-1" style="border: 2px solid black; text-align: center;"></td><td id="X-1" style="border: 2px solid black; text-align: center;"></td><td id="Y-1" style="border: 2px solid black; text-align: center;"></td><td id="Z-1" style="border: 2px solid black; text-align: center;"></td><td id="Z2-1" style="border: 2px solid black; text-align: center;"></td><td id="Output-1" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-2" style="display: none;"><td id="LineNumber-2" style="border: 2px solid black; text-align: center;"></td><td id="X-2" style="border: 2px solid black; text-align: center;"></td><td id="Y-2" style="border: 2px solid black; text-align: center;"></td><td id="Z-2" style="border: 2px solid black; text-align: center;"></td><td id="Z2-2" style="border: 2px solid black; text-align: center;"></td><td id="Output-2" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-3" style="display: none;"><td id="LineNumber-3" style="border: 2px solid black; text-align: center;"></td><td id="X-3" style="border: 2px solid black; text-align: center;"></td><td id="Y-3" style="border: 2px solid black; text-align: center;"></td><td id="Z-3" style="border: 2px solid black; text-align: center;"></td><td id="Z2-3" style="border: 2px solid black; text-align: center;"></td><td id="Output-3" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-4" style="display: none;"><td id="LineNumber-4" style="border: 2px solid black; text-align: center;"></td><td id="X-4" style="border: 2px solid black; text-align: center;"></td><td id="Y-4" style="border: 2px solid black; text-align: center;"></td><td id="Z-4" style="border: 2px solid black; text-align: center;"></td><td id="Z2-4" style="border: 2px solid black; text-align: center;"></td><td id="Output-4" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-5" style="display: none;"><td id="LineNumber-5" style="border: 2px solid black; text-align: center;"></td><td id="X-5" style="border: 2px solid black; text-align: center;"></td><td id="Y-5" style="border: 2px solid black; text-align: center;"></td><td id="Z-5" style="border: 2px solid black; text-align: center;"></td><td id="Z2-5" style="border: 2px solid black; text-align: center;"></td><td id="Output-5" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-6" style="display: none;"><td id="LineNumber-6" style="border: 2px solid black; text-align: center;"></td><td id="X-6" style="border: 2px solid black; text-align: center;"></td><td id="Y-6" style="border: 2px solid black; text-align: center;"></td><td id="Z-6" style="border: 2px solid black; text-align: center;"></td><td id="Z2-6" style="border: 2px solid black; text-align: center;"></td><td id="Output-6" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-7" style="display: none;"><td id="LineNumber-7" style="border: 2px solid black; text-align: center;"></td><td id="X-7" style="border: 2px solid black; text-align: center;"></td><td id="Y-7" style="border: 2px solid black; text-align: center;"></td><td id="Z-7" style="border: 2px solid black; text-align: center;"></td><td id="Z2-7" style="border: 2px solid black; text-align: center;"></td><td id="Output-7" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-8" style="display: none;"><td id="LineNumber-8" style="border: 2px solid black; text-align: center;"></td><td id="X-8" style="border: 2px solid black; text-align: center;"></td><td id="Y-8" style="border: 2px solid black; text-align: center;"></td><td id="Z-8" style="border: 2px solid black; text-align: center;"></td><td id="Z2-8" style="border: 2px solid black; text-align: center;"></td><td id="Output-8" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-9" style="display: none;"><td id="LineNumber-9" style="border: 2px solid black; text-align: center;"></td><td id="X-9" style="border: 2px solid black; text-align: center;"></td><td id="Y-9" style="border: 2px solid black; text-align: center;"></td><td id="Z-9" style="border: 2px solid black; text-align: center;"></td><td id="Z2-9" style="border: 2px solid black; text-align: center;"></td><td id="Output-9" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-10" style="display: none;"><td id="LineNumber-10" style="border: 2px solid black; text-align: center;"></td><td id="X-10" style="border: 2px solid black; text-align: center;"></td><td id="Y-10" style="border: 2px solid black; text-align: center;"></td><td id="Z-10" style="border: 2px solid black; text-align: center;"></td><td id="Z2-10" style="border: 2px solid black; text-align: center;"></td><td id="Output-10" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-11" style="display: none;"><td id="LineNumber-11" style="border: 2px solid black; text-align: center;"></td><td id="X-11" style="border: 2px solid black; text-align: center;"></td><td id="Y-11" style="border: 2px solid black; text-align: center;"></td><td id="Z-11" style="border: 2px solid black; text-align: center;"></td><td id="Z2-11" style="border: 2px solid black; text-align: center;"></td><td id="Output-11" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-12" style="display: none;"><td id="LineNumber-12" style="border: 2px solid black; text-align: center;"></td><td id="X-12" style="border: 2px solid black; text-align: center;"></td><td id="Y-12" style="border: 2px solid black; text-align: center;"></td><td id="Z-12" style="border: 2px solid black; text-align: center;"></td><td id="Z2-12" style="border: 2px solid black; text-align: center;"></td><td id="Output-12" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-13" style="display: none;"><td id="LineNumber-13" style="border: 2px solid black; text-align: center;"></td><td id="X-13" style="border: 2px solid black; text-align: center;"></td><td id="Y-13" style="border: 2px solid black; text-align: center;"></td><td id="Z-13" style="border: 2px solid black; text-align: center;"></td><td id="Z2-13" style="border: 2px solid black; text-align: center;"></td><td id="Output-13" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-14" style="display: none;"><td id="LineNumber-14" style="border: 2px solid black; text-align: center;"></td><td id="X-14" style="border: 2px solid black; text-align: center;"></td><td id="Y-14" style="border: 2px solid black; text-align: center;"></td><td id="Z-14" style="border: 2px solid black; text-align: center;"></td><td id="Z2-14" style="border: 2px solid black; text-align: center;"></td><td id="Output-14" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-15" style="display: none;"><td id="LineNumber-15" style="border: 2px solid black; text-align: center;"></td><td id="X-15" style="border: 2px solid black; text-align: center;"></td><td id="Y-15" style="border: 2px solid black; text-align: center;"></td><td id="Z-15" style="border: 2px solid black; text-align: center;"></td><td id="Z2-15" style="border: 2px solid black; text-align: center;"></td><td id="Output-15" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-16" style="display: none;"><td id="LineNumber-16" style="border: 2px solid black; text-align: center;"></td><td id="X-16" style="border: 2px solid black; text-align: center;"></td><td id="Y-16" style="border: 2px solid black; text-align: center;"></td><td id="Z-16" style="border: 2px solid black; text-align: center;"></td><td id="Z2-16" style="border: 2px solid black; text-align: center;"></td><td id="Output-16" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-17" style="display: none;"><td id="LineNumber-17" style="border: 2px solid black; text-align: center;"></td><td id="X-17" style="border: 2px solid black; text-align: center;"></td><td id="Y-17" style="border: 2px solid black; text-align: center;"></td><td id="Z-17" style="border: 2px solid black; text-align: center;"></td><td id="Z2-17" style="border: 2px solid black; text-align: center;"></td><td id="Output-17" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-18" style="display: none;"><td id="LineNumber-18" style="border: 2px solid black; text-align: center;"></td><td id="X-18" style="border: 2px solid black; text-align: center;"></td><td id="Y-18" style="border: 2px solid black; text-align: center;"></td><td id="Z-18" style="border: 2px solid black; text-align: center;"></td><td id="Z2-18" style="border: 2px solid black; text-align: center;"></td><td id="Output-18" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-19" style="display: none;"><td id="LineNumber-19" style="border: 2px solid black; text-align: center;"></td><td id="X-19" style="border: 2px solid black; text-align: center;"></td><td id="Y-19" style="border: 2px solid black; text-align: center;"></td><td id="Z-19" style="border: 2px solid black; text-align: center;"></td><td id="Z2-19" style="border: 2px solid black; text-align: center;"></td><td id="Output-19" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-20" style="display: none;"><td id="LineNumber-20" style="border: 2px solid black; text-align: center;"></td><td id="X-20" style="border: 2px solid black; text-align: center;"></td><td id="Y-20" style="border: 2px solid black; text-align: center;"></td><td id="Z-20" style="border: 2px solid black; text-align: center;"></td><td id="Z2-20" style="border: 2px solid black; text-align: center;"></td><td id="Output-20" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-21" style="display: none;"><td id="LineNumber-21" style="border: 2px solid black; text-align: center;"></td><td id="X-21" style="border: 2px solid black; text-align: center;"></td><td id="Y-21" style="border: 2px solid black; text-align: center;"></td><td id="Z-21" style="border: 2px solid black; text-align: center;"></td><td id="Z2-21" style="border: 2px solid black; text-align: center;"></td><td id="Output-21" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-22" style="display: none;"><td id="LineNumber-22" style="border: 2px solid black; text-align: center;"></td><td id="X-22" style="border: 2px solid black; text-align: center;"></td><td id="Y-22" style="border: 2px solid black; text-align: center;"></td><td id="Z-22" style="border: 2px solid black; text-align: center;"></td><td id="Z2-22" style="border: 2px solid black; text-align: center;"></td><td id="Output-22" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-23" style="display: none;"><td id="LineNumber-23" style="border: 2px solid black; text-align: center;"></td><td id="X-23" style="border: 2px solid black; text-align: center;"></td><td id="Y-23" style="border: 2px solid black; text-align: center;"></td><td id="Z-23" style="border: 2px solid black; text-align: center;"></td><td id="Z2-23" style="border: 2px solid black; text-align: center;"></td><td id="Output-23" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-24" style="display: none;"><td id="LineNumber-24" style="border: 2px solid black; text-align: center;"></td><td id="X-24" style="border: 2px solid black; text-align: center;"></td><td id="Y-24" style="border: 2px solid black; text-align: center;"></td><td id="Z-24" style="border: 2px solid black; text-align: center;"></td><td id="Z2-24" style="border: 2px solid black; text-align: center;"></td><td id="Output-24" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-25" style="display: none;"><td id="LineNumber-25" style="border: 2px solid black; text-align: center;"></td><td id="X-25" style="border: 2px solid black; text-align: center;"></td><td id="Y-25" style="border: 2px solid black; text-align: center;"></td><td id="Z-25" style="border: 2px solid black; text-align: center;"></td><td id="Z2-25" style="border: 2px solid black; text-align: center;"></td><td id="Output-25" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-26" style="display: none;"><td id="LineNumber-26" style="border: 2px solid black; text-align: center;"></td><td id="X-26" style="border: 2px solid black; text-align: center;"></td><td id="Y-26" style="border: 2px solid black; text-align: center;"></td><td id="Z-26" style="border: 2px solid black; text-align: center;"></td><td id="Z2-26" style="border: 2px solid black; text-align: center;"></td><td id="Output-26" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-27" style="display: none;"><td id="LineNumber-27" style="border: 2px solid black; text-align: center;"></td><td id="X-27" style="border: 2px solid black; text-align: center;"></td><td id="Y-27" style="border: 2px solid black; text-align: center;"></td><td id="Z-27" style="border: 2px solid black; text-align: center;"></td><td id="Z2-27" style="border: 2px solid black; text-align: center;"></td><td id="Output-27" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-28" style="display: none;"><td id="LineNumber-28" style="border: 2px solid black; text-align: center;"></td><td id="X-28" style="border: 2px solid black; text-align: center;"></td><td id="Y-28" style="border: 2px solid black; text-align: center;"></td><td id="Z-28" style="border: 2px solid black; text-align: center;"></td><td id="Z2-28" style="border: 2px solid black; text-align: center;"></td><td id="Output-28" style="border: 2px solid black; text-align: center;"></td></tr><tr id="row-29" style="display: none;"><td id="LineNumber-29" style="border: 2px solid black; text-align: center;"></td><td id="X-29" style="border: 2px solid black; text-align: center;"></td><td id="Y-29" style="border: 2px solid black; text-align: center;"></td><td id="Z-29" style="border: 2px solid black; text-align: center;"></td><td id="Z2-29" style="border: 2px solid black; text-align: center;"></td><td id="Output-29" style="border: 2px solid black; text-align: center;"></td></tr></tbody>
+            </table>
+           
+          </div>
+            
+          <div id="problem" aria-labelledby="ui-id-4" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-expanded="false" aria-hidden="true" style="display: none;">
+                <br><br>
+                <img id="imgProblem" src="./problem.png" style="width:85%;height:auto">
+          </div>            
+            
+        </div>
+        
+    </div>
+    
+</div>     
+  
+
+<div class="ui-popup-screen ui-overlay-b ui-screen-hidden" id="VarDialog-screen"></div><div class="ui-popup-container ui-popup-hidden ui-popup-truncate" id="VarDialog-popup"><div data-role="popup" id="VarDialog" data-overlay-theme="b" data-theme="b" data-dismissible="false" style="max-width:500px;" class="ui-popup ui-body-b ui-overlay-shadow ui-corner-all">        
+        <div data-role="header" data-theme="b" class="ui-corner-top ui-header ui-bar-b" role="banner">
+			<h1 class="ui-title" role="heading" aria-level="1">Δεδομένα</h1>
+		</div>
+		<div data-role="content" data-theme="b" class="ui-corner-bottom ui-content ui-body-b" role="main">
+			<p>Εισάγετε τις τιμές των μεταβλητών x και y : </p>
+            
+            <br>
+            <table data-role="table" data-mode="reflow" class="ui-responsive ui-table ui-table-reflow" style="display:table">                
+                <thead>
+                <tr>                                        
+                    <td data-colstart="1"> x :
+                    </td>
+                    <td data-colstart="2">
+                        <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input style="text-align: center;font-weight:bold" type="number" data-clear-btn="false" name="number-A" id="number-A" value=""></div>                        
+                    </td>
+                </tr>  
+                </thead>
+                <tbody>
+                <tr>
+                    <td><b class="ui-table-cell-label"> x :
+                    </b> y :
+                    </td>
+                    <td><b class="ui-table-cell-label">
+                        <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input style="text-align: center;font-weight:bold" type="number" data-clear-btn="false" name="number-A" id="number-A" value=""></div>                        
+                    </b>
+                        <div class="ui-input-text ui-body-inherit ui-corner-all ui-shadow-inset"><input style="text-align: center;font-weight:bold" type="number" data-clear-btn="false" name="number-B" id="number-B" value=""></div>                                                
+                    </td>
+                </tr>      
+                </tbody>                
+            </table>        
+            <br>
+			
+			<a href="https://photodentro.edu.gr/photodentro/algorithmos_tou_Eukleidh_v1.0_pidx0052385/#" id="btnEnter" data-role="button" data-theme="b" data-rel="back" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" class="ui-btn-corner-all ui-btn-up-b ui-btn ui-shadow" data-transition="fade" data-direction="reverse" role="button"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Καταχώρηση</span></span></a>             
+		</div>
+    </div></div><div class="ui-screen-hidden ui-popup-screen ui-overlay-b" id="popup-screen"></div><div class="ui-popup-container ui-popup-hidden ui-popup-truncate" id="popup-popup"><div data-role="popup" id="popup" data-overlay-theme="b" data-theme="a" data-tolerance="15,15" class="ui-content ui-popup ui-body-a ui-overlay-shadow ui-corner-all">
+                        <iframe style="overflow-x: auto;overflow-y: auto" src="./index_DS_II.html" width="880px" height="650"></iframe>
+                    </div></div></div><div class="ui-loader ui-corner-all ui-body-a ui-loader-default"><span class="ui-icon-loading"></span><h1>loading</h1></div></body></html>

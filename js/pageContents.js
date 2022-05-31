@@ -204,8 +204,12 @@ function definePageContents() {
 				' <div class="result">' +
 				'   GCD = <span id="gcd" style="color: #ff0000"></span>' +
 				' </div>'+
-			'</div>';			
+				'</div>';
+
+			var link2 = ' <b> <a  href="Φωτόδεντρο - Προβολή αντικειμένου.html">ΑΝΑΛΥΤΙΚΗ ΕΠΕΞΕΓΗΣΗ ΑΛΓΟΡΙΘΜΟΥ ΒΗΜΑ ΠΡΟΣ ΒΗΜΑ</a> </b>';
+
 			pageContent.push(codeBlock);
+			pageContent.push(link2);
 			break;
 
 		case pgSafeDrivingB:
